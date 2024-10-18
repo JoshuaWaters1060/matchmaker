@@ -1,40 +1,66 @@
+const TRUE_LOVE_ANSWERS = [5, 5, 5, 1, 1];
+const MAX_SCORE_PER_QUESTION = 10;
+const SCORE_THRESHOLD_HIGH = 80;
+const SCORE_THRESHOLD_MEDIUM = 50;
+
+function validate(userAnswers) {
+    let isValid = true;
+    const errorMessages = [];
+
+    userAnswers.forEach((answer, index) => {
+        if (isNaN(answer) || answer < 1 || answer > 5) {
+            isValid = false;
+            errorMessages.push(`Question ${index + 1}: Please enter a valid answer (1-5).`);
+        }
+    });
+
+    if (!isValid) {
+        alert(errorMessages.join('\n'));
+    }
+
+    return isValid;
+}
+
 document.getElementById('quizForm').addEventListener('submit', function(event) {
     event.preventDefault();
 
-    const userAnswers = Array.from(document.querySelectorAll('.question input')).map(input => parseInt(input.value));
-    const trueLoveAnswers = [5, 5, 5, 1, 1];
-    let totalCompatibilityScore = 0;
+    const userAnswers = Array.from(document.querySelectorAll('.question input'))
+                             .map(input => parseInt(input.value));
 
-    // Store individual compatibility scores
+    if (!validate(userAnswers)) {
+        return; 
+    }
+
+    let totalCompatibilityScore = 0;
     const individualScores = [];
 
     for (let i = 0; i < userAnswers.length; i++) {
-        const scoreDifference = Math.abs(userAnswers[i] - trueLoveAnswers[i]);
-        const individualScore = Math.max(0, 10 - (scoreDifference * 2)); // Scale score to 0-10
+        const scoreDifference = Math.abs(userAnswers[i] - TRUE_LOVE_ANSWERS[i]);
+        const individualScore = Math.max(0, MAX_SCORE_PER_QUESTION - (scoreDifference * 2)); 
         individualScores.push(individualScore);
-        totalCompatibilityScore += individualScore; // Sum individual scores instead of score differences
+        totalCompatibilityScore += individualScore;
     }
 
-    const maxIndividualScore = individualScores.length * 10; // Maximum score (10 per question)
-    const finalPercentage = ((totalCompatibilityScore / maxIndividualScore) * 100).toFixed(2); // Calculate percentage
+    const maxIndividualScore = individualScores.length * MAX_SCORE_PER_QUESTION;
+    const finalPercentage = ((totalCompatibilityScore / maxIndividualScore) * 100).toFixed(2);
 
     let resultMessage;
-    if (finalPercentage >= 80) {
+    if (finalPercentage >= SCORE_THRESHOLD_HIGH) {
         resultMessage = "You're a true love match!";
-    } else if (finalPercentage >= 50) {
+    } else if (finalPercentage >= SCORE_THRESHOLD_MEDIUM) {
         resultMessage = "Maybe we could be friends!";
     } else {
         resultMessage = "No way!";
     }
 
-    // Display the overall compatibility percentage score
+    
     let resultHTML = `<p>Your Overall Compatibility Score: ${totalCompatibilityScore} / ${maxIndividualScore} (${finalPercentage}%)</p>
     <p>${resultMessage}</p>`;
 
-    // Display individual question scores
+    
     resultHTML += '<p>Individual Question Compatibility Scores:</p><ul>';
     individualScores.forEach((score, index) => {
-        resultHTML += `<ul>Question ${index + 1}: ${score} / 10</ul>`;
+        resultHTML += `<li>Question ${index + 1}: ${score} / 10</li>`;
     });
     resultHTML += '</ul>';
 
