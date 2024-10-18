@@ -20,5 +20,5 @@ document.getElementById('quizForm').addEventListener('submit', function(event) {
         resultMessage = "No way!";
     }
 
-    document.getElementById('result').innerHTML = `<h2>Your Compatibility Score: ${finalScore}</h2><p>${resultMessage}</p>`;
+    document.getElementById('result').innerHTML = `<p>Your Compatibility Score: ${finalScore}</p><p>${resultMessage}</p>`;
 });
