@@ -49,3 +49,13 @@ button:hover {
 p {
     font-size:small;
 }
+
+ul {
+    margin-left: -43px;
+    font-size: small;
+}
+
+#result {
+    margin-top: 40px;
+    font-size: 1.2em;
+}
