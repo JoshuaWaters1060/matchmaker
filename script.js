@@ -1,4 +1,4 @@
-const TRUE_LOVE_ANSWERS = [5, 5, 5, 1, 1];
+const TRUE_LOVE_ANSWERS = [4, 3, 5, 1, 1];
 const MAX_SCORE_PER_QUESTION = 10;
 const SCORE_THRESHOLD_HIGH = 80;
 const SCORE_THRESHOLD_MEDIUM = 50;
@@ -60,7 +60,7 @@ document.getElementById('quizForm').addEventListener('submit', function(event) {
     
     resultHTML += '<p>Individual Question Compatibility Scores:</p><ul>';
     individualScores.forEach((score, index) => {
-        resultHTML += `<li>Question ${index + 1}: ${score} / 10</li>`;
+        resultHTML += `<p>Question ${index + 1}: ${score} / 10</p>`;
     });
     resultHTML += '</ul>';
 
